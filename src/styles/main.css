@@ -1,0 +1,533 @@
+/* ==========================================================================
+   SWARNA FARMS - Luxury Cinematic Scroll Experience
+   Mobile-First Editorial Design System
+   ========================================================================== */
+
+:root {
+  /* Chromatic Palette */
+  --bg-deep: #070806;
+  --bg-surface: #0d0f0b;
+  --bg-elevated: #151711;
+  
+  --text-primary: #fcfaf6;
+  --text-secondary: rgba(252, 250, 246, 0.72);
+  --text-tertiary: rgba(252, 250, 246, 0.44);
+  
+  --accent-gold: #c5a059;
+  --accent-gold-soft: rgba(197, 160, 89, 0.25);
+  --accent-earth: #7a7058;
+  --border-hairline: rgba(252, 250, 246, 0.12);
+
+  /* Typography Scales */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Viewport Geometry */
+  --max-cinematic-width: 480px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+}
+
+/* ==========================================================================
+   Minimalist Loading Experience (0-100%)
+   ========================================================================== */
+
+.minimal-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg-deep);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s;
+  pointer-events: all;
+}
+
+.minimal-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-brand {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  padding-left: 0.35em; /* Compensate for tracking */
+}
+
+.loader-status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 160px;
+}
+
+.loader-bar-track {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background-color: var(--accent-gold);
+  transition: width 0.15s ease-out;
+}
+
+.loader-percent {
+  font-size: 0.6875rem;
+  letter-spacing: 0.25em;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Header Brand Watermark
+   ========================================================================== */
+
+.cinematic-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem;
+  pointer-events: none;
+}
+
+.brand-monogram {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+.audio-indicator {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.audio-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent-gold);
+  animation: pulse-dot 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ==========================================================================
+   Scroll & Sticky Viewport Hierarchy
+   ========================================================================== */
+
+.scroll-track-container {
+  position: relative;
+  width: 100%;
+  height: 550vh; /* Scrubber timeline length */
+  background-color: var(--bg-deep);
+}
+
+.sticky-cinematic-viewport {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-deep);
+}
+
+.canvas-frame-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: var(--max-cinematic-width);
+  margin: 0 auto;
+}
+
+.frame-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: var(--bg-deep);
+}
+
+/* ==========================================================================
+   Editorial Text Layer (Sitting Independently Above Canvas)
+   ========================================================================== */
+
+.editorial-overlay-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 1.75rem 4.5rem;
+  text-align: center;
+}
+
+.editorial-cue {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.85);
+}
+
+.cue-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.cue-headline {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.cue-description {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  max-width: 280px;
+}
+
+/* Subtle Scroll Prompt */
+.scroll-prompt {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.scroll-prompt.is-visible {
+  opacity: 0.7;
+  visibility: visible;
+}
+
+.scroll-prompt-text {
+  font-size: 0.5625rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.scroll-prompt-line {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, var(--accent-gold), transparent);
+  animation: scroll-pulse 2s infinite ease-in-out;
+}
+
+@keyframes scroll-pulse {
+  0% { transform: scaleY(0.4); transform-origin: top; opacity: 0.3; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  100% { transform: scaleY(0.4); transform-origin: bottom; opacity: 0.3; }
+}
+
+/* ==========================================================================
+   Ending Brand Section (Pure Luxury Minimalism)
+   ========================================================================== */
+
+.ending-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--bg-deep);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem 2.5rem;
+  text-align: center;
+  z-index: 40;
+}
+
+.ending-content {
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ending-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ending-pre-title {
+  font-size: 0.625rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.ending-title {
+  font-family: var(--font-serif);
+  font-size: 2.125rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.15;
+  padding-left: 0.22em; /* Balance tracking */
+}
+
+.ending-divider {
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 0.25rem 0;
+}
+
+.ending-tagline {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  font-weight: 300;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding-left: 0.28em;
+}
+
+.ending-status-badge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  border: 1px solid var(--accent-gold-soft);
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  background-color: rgba(197, 160, 89, 0.04);
+}
+
+/* Minimalist Email Notification */
+.ending-notify-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.notify-input-group {
+  position: relative;
+  width: 100%;
+}
+
+.notify-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  padding: 0.75rem 0;
+  text-align: center;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.notify-input::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+}
+
+.notify-input:focus {
+  border-bottom-color: var(--accent-gold);
+}
+
+.notify-button {
+  background: transparent;
+  border: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notify-button:hover,
+.notify-button:focus-visible {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background-color: rgba(197, 160, 89, 0.05);
+}
+
+.notify-message {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-gold);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  min-height: 1.25rem;
+}
+
+.notify-message.is-active {
+  opacity: 1;
+}
+
+/* Replay Film Action */
+.replay-film-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+.replay-film-btn:hover {
+  color: var(--text-primary);
+}
+
+.replay-icon {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.ending-footer {
+  margin-top: 3rem;
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   Desktop Responsive Framing (Preserving 9:16 Visual Integrity)
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  :root {
+    --max-cinematic-width: 520px;
+  }
+
+  .canvas-frame-container {
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+  }
+
+  .cue-headline {
+    font-size: 1.75rem;
+  }
+
+  .cue-description {
+    font-size: 0.8125rem;
+    max-width: 320px;
+  }
+
+  .ending-title {
+    font-size: 2.5rem;
+  }
+}
